@@ -2,24 +2,27 @@ import os
 import pandas as pd
 import warnings
 
-########################################## VERİYİ TEMİZLEME İLE İLGİLİ FONKSİYONLAR VE OBJELER - START ###########################################3
+########################################## FUNCTIONS AND OBJECTS RELATED TO DATA CLEANING - START ###########################################
 
-# Çok fazla uyarı veriyordu, bunu konsolda görmek istemediğim için kapattım
+# Too many warnings were appearing, I disabled them because I didn't want to see them in the console
 warnings.simplefilter("ignore", UserWarning)
 
-# Script'in bulunduğu dizini alalım ilk önce
+# First, let's get the directory where the script is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Excel dosyalarının bulunduğu dizin, relative path olarak tutulacak çünkü projeyi kendi lokalinde çalıştıran insan için kendi path'imi kullanamam
+# The directory where the Excel files are located, it will be kept as a relative path because I cannot use my own path for someone running the project on their own local machine
 excel_dir = os.path.join(current_dir, 'Üye Bilgi Liste')
 
-# Temizlenmiş dosyaların kaydedileceği dizin (relative path)
+# I determined the directory where the cleaned files will be saved this way so that they have a similar name
 cleaned_dir = os.path.join(current_dir, 'Temizlenmiş Üye Bilgi Liste')
 
-# Eğer 'Temizlenmiş Üye Bilgi Liste' dizini yoksa oluştur
+# If the 'Temizlenmiş Üye Bilgi Liste' folder does not exist, I want it to be created first; this folder will be at the same level as the directory where the script is located.
 if not os.path.exists(cleaned_dir):
     os.makedirs(cleaned_dir)
 
+
+
+#### MODIFYING AND CLEANING PART ####
 def clean_data():
     cleaned_data_frames = []
     for filename in os.listdir(excel_dir):
@@ -27,43 +30,47 @@ def clean_data():
             file_path = os.path.join(excel_dir, filename)
             df = pd.read_excel(file_path)
             
-            # "Ünvanı" sütununda "LİMİTED" veya "ANONİM" içermeyen satırları filtreleme
+            # Filter rows where the "Ünvanı" column does not contain "LİMİTED" or "ANONİM"
             df_cleaned = df[df['Ünvanı'].str.contains('LİMİTED|ANONİM', na=False)].copy()
             
-            # "Şirket Türü" adında yeni bir sütun ekleme ve değerleri atama
+            # Add a new column named "Şirket Türü" and assign values
             df_cleaned['Şirket Türü'] = df_cleaned['Ünvanı'].apply(
                 lambda x: 'ANONİM' if 'ANONİM' in x else 'LİMİTED' if 'LİMİTED' in x else None
             )
             
-            # Temizlenmiş DataFrame'i saklama
+            # Add two new columns "Meslek Grubu Sayı" and "Meslek Grubu Adı"
+            df_cleaned['Meslek Grubu Numarası'] = df_cleaned['Meslek Grubu'].apply(lambda x: x.split(" - ")[0])
+            df_cleaned['Meslek Grubu Adı'] = df_cleaned['Meslek Grubu'].apply(lambda x: x.split(" - ")[1] if ' - ' in x else '')
+            
+            # Store the cleaned DataFrame
             cleaned_data_frames.append((df_cleaned, filename))
     
     return cleaned_data_frames
 
+
+
+#### SAVING PART ####
 def save_cleaned_data(cleaned_data_frames):
-    # Temizlenmiş veriyi yeni Excel dosyalarına kaydet
+    # Save the cleaned data to new Excel files
     for df, original_filename in cleaned_data_frames:
         try:
-            # Dosya adını oluştur
-            komite_no = original_filename.split(" - ")[1].replace(".xlsx", "").strip()  # Örneğin: '1. komite'
+            # Generate the file name
+            komite_no = original_filename.split(" - ")[1].replace(".xlsx", "").strip()  # Example: '1. komite'
             output_filename = f'Temizlenmiş Üye Bilgi Liste - {komite_no}.xlsx'
             output_path = os.path.join(cleaned_dir, output_filename)
             
-            # Dosyayı kaydet
+            # Save the file
             df.to_excel(output_path, index=False)
         except IndexError:
-            print(f"Dosya adı formatı beklenmiyor: {original_filename}. Dosya atlanıyor.")
+            print(f"File name format is not as expected: {original_filename}. File is skipped.")
 
-########################################## VERİYİ TEMİZLEME İLE İLGİLİ FONKSİYONLAR VE OBJELER - END ###########################################3
-
-
+########################################## FUNCTIONS AND OBJECTS RELATED TO DATA CLEANING - END ###########################################
 
 
 
 
-
-# SCRIPT BAŞLANGIÇ NOKTASI VE AŞAMALARIN TEK TEK ÇAĞIRILDIĞI YER
+# SCRIPT START POINT AND WHERE THE STAGES ARE CALLED ONE BY ONE
 if __name__ == "__main__":
     cleaned_data_frames = clean_data()
     save_cleaned_data(cleaned_data_frames)
-    print(f"Veri temizleme işlemi tamamlandı ve temizlenmiş veriler '{cleaned_dir}' dizinine kaydedildi.")
+    print(f"Data cleaning is complete, and the cleaned data has been saved to the '{cleaned_dir}' directory.")
