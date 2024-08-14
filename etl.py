@@ -68,12 +68,15 @@ def clean_data():
             df_cleaned = df_cleaned.dropna(subset=['İlçe Adı'])
             
             # Add two new columns "Meslek Grubu Sayı" and "Meslek Grubu Adı"
-            df_cleaned['Meslek Grubu Sayı'] = df_cleaned['Meslek Grubu'].apply(lambda x: x.split(" - ")[0])
+            df_cleaned['Meslek Grubu Numarası'] = df_cleaned['Meslek Grubu'].apply(lambda x: x.split(" - ")[0])
             df_cleaned['Meslek Grubu Adı'] = df_cleaned['Meslek Grubu'].apply(lambda x: x.split(" - ")[1] if ' - ' in x else '')
 
+            # Drop the "Meslek Grubu" column
+            df_cleaned = df_cleaned.drop(columns=['Meslek Grubu'])
+            
             # Move "Ünvanı" and "Tescilli Adresi" columns to the end
-            columns_order = [col for col in df_cleaned.columns if col not in ['Ünvanı', 'Tescilli Adresi', 'Meslek Grubu']]
-            columns_order.extend(['Ünvanı', 'Tescilli Adresi', 'Meslek Grubu'])
+            columns_order = [col for col in df_cleaned.columns if col not in ['Ünvanı', 'Tescilli Adresi']]
+            columns_order.extend(['Ünvanı', 'Tescilli Adresi'])
             df_cleaned = df_cleaned[columns_order]
             
             # Store the cleaned DataFrame
