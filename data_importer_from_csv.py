@@ -21,7 +21,7 @@ cursor = conn.cursor()
 # Step 1: Create the table if it doesn't exist
 try:
     create_table_query = '''
-    CREATE TABLE IF NOT EXISTS komiteler (
+    CREATE TABLE IF NOT EXISTS şirketler (
         `oda_sicil_no` VARCHAR(255),
         `ticari_sicil_no` VARCHAR(255),
         `sirket_turu` ENUM('ANONİM', 'LİMİTED'),
@@ -34,10 +34,10 @@ try:
     );
     '''
     cursor.execute(create_table_query)
-    print("Table 'komiteler' created or already exists.")
+    print("Table 'şirketler' created or already exists.")
 except mysql.connector.errors.DatabaseError as e:
     if "1050" in str(e):
-        print("Table 'komiteler' already exists. Skipping table creation.")
+        print("Table 'şirketler' already exists. Skipping table creation.")
     else:
         raise
 
@@ -62,7 +62,7 @@ for filename in os.listdir(csv_directory):
         columns_string = ', '.join([f"`{col}`" for col in columns])
         values_string = ', '.join(['%s' for _ in columns])
         
-        insert_query = f"INSERT INTO komiteler ({columns_string}) VALUES ({values_string})"
+        insert_query = f"INSERT INTO şirketler ({columns_string}) VALUES ({values_string})"
         
         # Insert each row into the MySQL table
         for _, row in df.iterrows():
