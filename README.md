@@ -29,3 +29,34 @@ In this web application, users can choose from nine main condition areas, each e
 Next, in the active "District Name" condition area, the user would check the "Starts with" box and enter the letter "B." Similarly, in the active "Occupational Group Number" main condition area, the user would check and activate the "Between ... and ..." box, entering the parameters 30 and 60. Inactive checkboxes within active main condition areas will be disregarded, so any parameters from these will not influence the filtering process.
 
 These selected conditions and subconditions will be converted into a request on the backend, which will then modify the SQL query accordingly. If the user wants to perform more complex filtering, they can activate additional main condition areas. Each main condition area corresponds to a column in the database, while the subconditions modify the SQL query by determining the operation to be performed on that column.
+
+## Tech Stack and Technical Overview
+
+### Backend:
+- **Flask**: The backend of the application is built using Flask, a lightweight yet powerful web framework for Python. Flask is used to create a RESTful API that handles incoming HTTP requests, manages routing, and connects seamlessly with the database. Its simplicity and flexibility make it an excellent choice for this project.
+  
+- **SQLAlchemy**: For database management, the application utilizes SQLAlchemy, a sophisticated ORM (Object-Relational Mapping) library. SQLAlchemy abstracts the complexities of database operations by allowing Python developers to work with database records as Python objects. It enables dynamic query construction and complex filtering logic, which are essential for the advanced search functionalities of this project.
+
+- **MySQL**: The relational database management system used in this application is MySQL. MySQL is renowned for its reliability, performance, and ease of use. The database schema is designed to efficiently store and query structured data, particularly the company records being managed. During development, MySQL Workbench is employed for local database management, while the production environment will utilize a remote MySQL database, ensuring data availability and security.
+
+### Frontend:
+- **HTML/CSS/JavaScript**: The frontend is constructed using standard web technologies. HTML provides the structure of the web pages, CSS enhances the visual styling, and JavaScript adds dynamic interactivity. The UI is designed with a focus on user experience, enabling users to apply complex filters easily and view results in real-time.
+
+- **AJAX**: AJAX (Asynchronous JavaScript and XML) is used to handle asynchronous data exchanges between the frontend and backend without needing to refresh the page. This technology is critical for maintaining a responsive user interface, especially when executing and retrieving results from complex database queries.
+
+### Deployment:
+- **Vercel**: Vercel is the chosen platform for deploying the frontend of the application. Vercel is well-suited for modern web applications, offering seamless integration with frontend frameworks and providing a streamlined deployment process. The Flask backend will be connected through API routes hosted either on Vercel or a suitable backend hosting service.
+
+- **Docker (Planned)**: In future iterations, Docker will be incorporated to containerize the application. Docker will ensure that the application runs consistently across different environments—be it development, testing, or production. This approach will facilitate easier deployment and scaling.
+
+### Workflow:
+1. **User Interaction**: Users interact with a carefully designed UI consisting of nine main condition areas, each corresponding to a specific database column. Each area can be toggled on or off, and users can select from various subconditions to apply specific filters.
+   
+2. **Backend Processing**: The user’s filter selections are transmitted to the backend via an AJAX request. The Flask application processes these filters and dynamically builds an SQL query using SQLAlchemy. The modular filtering approach allows for complex and precise query customization.
+
+3. **Database Query**: The dynamically constructed query is executed against the MySQL database. SQLAlchemy’s ORM capabilities ensure that the data retrieved is fully aligned with the filters applied by the user.
+
+4. **Results Display**: The filtered results are returned to the frontend, where they are displayed in a scrollable interface. Users can easily browse through the companies that match their search criteria.
+
+5. **Future Enhancements**: Upcoming features include the ability to export filtered results to Excel, further enhancing data accessibility. Additionally, more complex filtering capabilities and performance optimizations are planned to ensure scalability as the dataset grows.
+

@@ -2,45 +2,44 @@ from flask import Blueprint, request, jsonify
 from app.models import Companies
 from app import db
 
-
-
-# filters.py dosyasından fonksiyonları import ediyoruz
+# Importing filter functions from filters.py
 from app.filters import (
     apply_oda_sicil_no_filters,
     apply_ticari_sicil_no_filters,
-    
-    # Diğer filtre fonksiyonları da buraya import edilecek...
+    apply_meslek_grubu_adi_filters,
+    apply_ilce_adi_filters,
+    apply_mahalle_adi_filters,
+    apply_unvani_filters,
+    apply_tescilli_adresi_filters,
+    apply_sirket_turu_filters,
+    apply_meslek_grubu_numarasi_filters,
 )
 
-
-
-# Blueprint oluşturulması
+# Creating a Blueprint
 main = Blueprint('main', __name__)
-
-
-
 
 @main.route('/search', methods=['GET'])
 def search():
-    # Tüm filtre parametrelerini request'ten al
     filters = request.args.to_dict()
-
-    # Ana sorgu fonksiyonunu kullanarak sonuçları al
     results = search_companies(**filters)
-
-    # Sonuçları JSON formatında döndür
     return jsonify([result.__dict__ for result in results])
 
-
-
-
+# Burasının değiştirilmesi lazım, userdan aynı zamanda büyük on off tuşu bilgisi gelecek, 
+    # filters kısmında o yüzden filters.get ile alakalı bir if block sekansı oluşturalım ona göre uygulayacak filtreleri.
+    
 def search_companies(**filters):
     query = Companies.query
 
-    # Filtreleme fonksiyonlarını uygula
+    # Apply all the filtering functions
     query = apply_oda_sicil_no_filters(query, filters)
     query = apply_ticari_sicil_no_filters(query, filters)
-    # Diğer filtreleme fonksiyonları burada kullanılacak...
+    query = apply_meslek_grubu_adi_filters(query, filters)
+    query = apply_ilce_adi_filters(query, filters)
+    query = apply_mahalle_adi_filters(query, filters)
+    query = apply_unvani_filters(query, filters)
+    query = apply_tescilli_adresi_filters(query, filters)
+    query = apply_sirket_turu_filters(query, filters)
+    query = apply_meslek_grubu_numarasi_filters(query, filters)
 
-    # Sonuçları döndür
+    # Return the filtered results
     return query.all()
