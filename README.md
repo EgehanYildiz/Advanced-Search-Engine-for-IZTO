@@ -10,7 +10,7 @@ Among İZTO's duties are supporting the commercial activities of its members, co
 
 On İZTO's public website, there is a section where individuals can access information about companies registered with the Izmir Chamber of Commerce. This section is an important resource for individuals and businesses seeking information about commercial activities in Izmir.
 
-## Projenin Ortaya çıkışı:
+## Origin of the Project:
 - On the Izmir Chamber of Commerce's (İZTO) public website, there is a section under "Online İşlemler". Here, there is a section called "Oda Sicil İşlemleri" and within this section there is a subsection called "Oda Sicil Üye Firma Sorgulama" where individuals can query companies registered with the Izmir Chamber of Commerce.
 - The hierarchy works as follows: Sectors -> Committees -> Companies. In other words, multiple committees emerge from a sector, and these committees are groups of companies engaged in similar business activities.
 - On the currently public website of the Izmir Chamber of Commerce, individuals can query and learn about companies from the database using information such as "Commercial No", "Chamber Registration No", "District Code", "Title", and "Occupational Group".
