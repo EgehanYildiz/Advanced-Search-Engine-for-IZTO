@@ -44,6 +44,9 @@ These selected conditions and subconditions will be converted into a request on 
 
 - **AJAX**: AJAX (Asynchronous JavaScript and XML) is used to handle asynchronous data exchanges between the frontend and backend without needing to refresh the page. This technology is critical for maintaining a responsive user interface, especially when executing and retrieving results from complex database queries.
 
+### Testing:
+- **POSTMAN**: The backend part is tested with POSTMAN when frontend was missing. POSTMAN is a popular API testing tool used by developers to send requests to the backend server and receive responses, enabling them to test the functionality of APIs.
+
 ### Deployment:
 - **Vercel**: Vercel is the chosen platform for deploying the frontend of the application. Vercel is well-suited for modern web applications, offering seamless integration with frontend frameworks and providing a streamlined deployment process. The Flask backend will be connected through API routes hosted either on Vercel or a suitable backend hosting service.
 
