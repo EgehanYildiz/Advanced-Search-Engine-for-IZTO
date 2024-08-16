@@ -8,6 +8,7 @@ from app import db
 from app.filters import (
     apply_oda_sicil_no_filters,
     apply_ticari_sicil_no_filters,
+    
     # Diğer filtre fonksiyonları da buraya import edilecek...
 )
 
