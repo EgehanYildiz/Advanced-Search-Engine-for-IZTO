@@ -1,3 +1,5 @@
+#filters.py
+
 from app.models import Companies
 from sqlalchemy import func
 
@@ -96,9 +98,9 @@ def apply_tescilli_adresi_filters(query, filters):
 
 def apply_sirket_turu_filters(query, filters):
     sirket_turu_filters = []
-    if filters.get('sirket_turu_anonim'):
+    if filters.get('sirket_turu_anonim', 'false').lower() == 'true':
         sirket_turu_filters.append('ANONİM')
-    if filters.get('sirket_turu_limited'):
+    if filters.get('sirket_turu_limited', 'false').lower() == 'true':
         sirket_turu_filters.append('LİMİTED')
     if sirket_turu_filters:
         query = query.filter(Companies.sirket_turu.in_(sirket_turu_filters))    

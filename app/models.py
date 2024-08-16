@@ -1,7 +1,6 @@
+#models.py
 from app import db
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
 
 """ Every entry in my database is represented as a class in Flask for Object Relational Mapping. 
 So, here we need exact matches in data types, we pull the data from 'şirketler' so we defined the tablename like that
@@ -23,4 +22,16 @@ class Companies(db.Model):
 
     def __repr__(self):
         return f'<Company Named: {self.unvani}, that has oda sicil no of: {self.oda_sicil_no} & ticari sicil no of: {self.ticari_sicil_no}>'
-
+    
+    def as_dict(self):
+            return {
+                'oda_sicil_no': self.oda_sicil_no,
+                'ticari_sicil_no': self.ticari_sicil_no,
+                'meslek_grubu_numarasi': self.meslek_grubu_numarasi,
+                'meslek_grubu_adi': self.meslek_grubu_adi,
+                'sirket_turu': self.sirket_turu,
+                'mahalle_adi': self.mahalle_adi,
+                'ilce_adi': self.ilce_adi,
+                'unvani': self.unvani,
+                'tescilli_adresi': self.tescilli_adresi,
+            }
