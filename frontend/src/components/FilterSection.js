@@ -1,23 +1,36 @@
-// src/components/FilterSection.js
 import React from 'react';
 
-const FilterSection = ({ title, children, toggleEnabled, setToggleEnabled }) => {
+function FilterSection({ title, toggleEnabled, setToggleEnabled, filters }) {
   return (
     <div className="filter-section">
-      <div className="filter-header">
-        <h3>{title}</h3>
-        <label className="switch">
-          <input
-            type="checkbox"
-            checked={toggleEnabled}
-            onChange={() => setToggleEnabled(!toggleEnabled)}
-          />
-          <span className="slider round"></span>
-        </label>
+      <div className="filter-section-container">
+        <div className="filter-section-title">{title}</div>
+        <div className="filter-section-toggle">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={toggleEnabled}
+              onChange={(e) => setToggleEnabled(e.target.checked)}
+            />
+            Enable
+          </label>
+        </div>
       </div>
-      {toggleEnabled && <div className="filter-options">{children}</div>}
+      {toggleEnabled &&
+        filters.map((filter, index) => (
+          <div className="filter-option" key={index}>
+            <label className="checkbox-label">
+              <input
+                type={filter.type || "checkbox"}
+                checked={filter.checked}
+                onChange={filter.onChange}
+              />
+              {filter.label}
+            </label>
+          </div>
+        ))}
     </div>
   );
-};
+}
 
 export default FilterSection;
