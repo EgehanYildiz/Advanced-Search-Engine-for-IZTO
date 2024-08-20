@@ -18,12 +18,6 @@ body, html {
   box-sizing: border-box;
 }
 
-.main-title {
-  font-size: 2.4rem;
-  font-weight: bold;
-  margin-bottom: 40px;
-}
-
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -32,14 +26,35 @@ body, html {
   max-width: 1200px;
 }
 
-.search-button-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  width: 100%;
-  margin-top: 20px;
+
+.search-button-container button {
+  background-color: #007bff; /* Bootstrap Primary Blue */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.search-button-container button:hover {
+  background-color: #0056b3; /* Darker Blue on Hover */
+}
+
+.search-button-container button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.search-button-container button:active {
+  background-color: #004085; /* Even Darker Blue on Click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transform: translateY(2px);
+}
+
 
 .filter-section {
   background-color: #f7f7f7;
@@ -85,8 +100,19 @@ body, html {
 .checkbox-label {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  width: 100%;
 }
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.checkbox-label input[type="text"] {
+  flex-grow: 1; /* Make the input field take up the remaining space */
+  margin-left: 10px; /* Add some space between the checkbox and input */
+  padding: 5px; /* Optional: Add some padding for better appearance */
+}
+
 
 .logo-container {
   margin-top: 0px;
@@ -95,8 +121,37 @@ body, html {
   align-items: center;
 }
 
+.header-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
 .izto-logo {
-  max-width: 70%;
-  height: 80%;
-  object-fit: contain;
+  max-width: 500px;
+  height: auto;
+  margin-bottom: -10px;
+}
+
+.main-title {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin-bottom: -8px;
+}
+
+.search-button-container {
+  text-align: right;
+  margin-bottom: -40px;
+}
+
+.app-main-container{
+  border-radius: 20px;
+  border-style: solid;
+  border-color: black;
+  padding: 80px;
+  padding-top: 35px;  
 }

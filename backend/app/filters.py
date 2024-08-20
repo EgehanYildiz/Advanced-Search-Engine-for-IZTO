@@ -113,14 +113,7 @@ def apply_meslek_grubu_numarasi_filters(query, filters):
         query = query.filter(Companies.meslek_grubu_numarasi < int(filters['meslek_grubu_numarasi_before']))
     if filters.get('meslek_grubu_numarasi_after'):
         query = query.filter(Companies.meslek_grubu_numarasi > int(filters['meslek_grubu_numarasi_after']))
-    if filters.get('meslek_grubu_numarasi_before_inclusive'):
-        query = query.filter(Companies.meslek_grubu_numarasi <= int(filters['meslek_grubu_numarasi_before_inclusive']))
-    if filters.get('meslek_grubu_numarasi_after_inclusive'):
-        query = query.filter(Companies.meslek_grubu_numarasi >= int(filters['meslek_grubu_numarasi_after_inclusive']))
     if filters.get('meslek_grubu_numarasi_between'):
         lower_bound, upper_bound = map(int, filters['meslek_grubu_numarasi_between'].split('-'))
         query = query.filter(Companies.meslek_grubu_numarasi > lower_bound, Companies.meslek_grubu_numarasi < upper_bound)
-    if filters.get('meslek_grubu_numarasi_between_inclusive'):
-        lower_bound, upper_bound = map(int, filters['meslek_grubu_numarasi_between_inclusive'].split('-'))
-        query = query.filter(Companies.meslek_grubu_numarasi >= lower_bound, Companies.meslek_grubu_numarasi <= upper_bound)
     return query

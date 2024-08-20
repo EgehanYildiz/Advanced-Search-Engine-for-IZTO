@@ -2,6 +2,18 @@ import React, { useState } from 'react';
 import FilterSection from './components/FilterSection';
 import './App.css';
 
+const filterMap = {
+  "oda_sicil_no": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "ticari_sicil_no": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "meslek_grubu_adi": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "ilce_adi": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "mahalle_adi": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "unvani": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "tescilli_adresi": ["contains", "not_contains", "start", "end", "exact", "length"],
+  "sirket_turu": ["limited", "anonim"],
+  "meslek_grubu_numarasi": ["equals", "before", "after", "between"]
+};
+
 function App() {
   // Define state variables for each filter section
   const [odaSicilEnabled, setOdaSicilEnabled] = useState(false);
@@ -76,8 +88,8 @@ function App() {
 
   const [sirketTuruEnabled, setSirketTuruEnabled] = useState(false);
   const [sirketTuruFilters, setSirketTuruFilters] = useState([
-    { label: "Limited", value: '', enabled: false },
-    { label: "Anonim", value: '', enabled: false },
+    { label: "Limited", enabled: false },
+    { label: "Anonim", enabled: false },
   ]);
 
   const [meslekGrubuNumarasiEnabled, setMeslekGrubuNumarasiEnabled] = useState(false);
@@ -85,12 +97,13 @@ function App() {
     { label: "... numaralı", value: '', enabled: false },
     { label: "... öncesi", value: '', enabled: false },
     { label: "... sonrası", value: '', enabled: false },
-    { label: "... aralığındakiler", value: '', enabled: false },
+    { label: "... aralığındakiler (örn: 30-50)", value: '', enabled: false },
   ]);
 
   const filters = [
     {
       title: "Oda Sicil No Koşulları",
+      param: "oda_sicil_no",
       toggleEnabled: odaSicilEnabled,
       setToggleEnabled: setOdaSicilEnabled,
       filters: odaSicilFilters.map((filter, index) => ({
@@ -109,6 +122,7 @@ function App() {
     },
     {
       title: "Ticari Sicil No Koşulları",
+      param: "ticari_sicil_no",
       toggleEnabled: ticariSicilEnabled,
       setToggleEnabled: setTicariSicilEnabled,
       filters: ticariSicilFilters.map((filter, index) => ({
@@ -127,6 +141,7 @@ function App() {
     },
     {
       title: "Meslek Grubu Adı Koşulları",
+      param: "meslek_grubu_adi",
       toggleEnabled: meslekGrubuEnabled,
       setToggleEnabled: setMeslekGrubuEnabled,
       filters: meslekGrubuFilters.map((filter, index) => ({
@@ -145,6 +160,7 @@ function App() {
     },
     {
       title: "İlçe Adı Koşulları",
+      param: "ilce_adi",
       toggleEnabled: ilceAdiEnabled,
       setToggleEnabled: setIlceAdiEnabled,
       filters: ilceAdiFilters.map((filter, index) => ({
@@ -163,6 +179,7 @@ function App() {
     },
     {
       title: "Mahalle Adı Koşulları",
+      param: "mahalle_adi",
       toggleEnabled: mahalleAdiEnabled,
       setToggleEnabled: setMahalleAdiEnabled,
       filters: mahalleAdiFilters.map((filter, index) => ({
@@ -180,6 +197,7 @@ function App() {
       },
       {
         title: "Ünvanı Koşulları",
+        param: "unvani",
         toggleEnabled: unvaniEnabled,
         setToggleEnabled: setUnvaniEnabled,
         filters: unvaniFilters.map((filter, index) => ({
@@ -198,6 +216,7 @@ function App() {
       },
       {
         title: "Tescilli Adresi Koşulları",
+        param: "tescilli_adresi",
         toggleEnabled: tescilliAdresiEnabled,
         setToggleEnabled: setTescilliAdresiEnabled,
         filters: tescilliAdresiFilters.map((filter, index) => ({
@@ -216,15 +235,11 @@ function App() {
       },
       {
         title: "Şirket Türü Koşulları",
+        param: "sirket_turu",
         toggleEnabled: sirketTuruEnabled,
         setToggleEnabled: setSirketTuruEnabled,
         filters: sirketTuruFilters.map((filter, index) => ({
           ...filter,
-          onChange: (value) => {
-            const updatedFilters = [...sirketTuruFilters];
-            updatedFilters[index].value = value;
-            setSirketTuruFilters(updatedFilters);
-          },
           setEnabled: (enabled) => {
             const updatedFilters = [...sirketTuruFilters];
             updatedFilters[index].enabled = enabled;
@@ -234,6 +249,7 @@ function App() {
       },
       {
         title: "Meslek Grubu Numarası Koşulları",
+        param: "meslek_grubu_numarasi",
         toggleEnabled: meslekGrubuNumarasiEnabled,
         setToggleEnabled: setMeslekGrubuNumarasiEnabled,
         filters: meslekGrubuNumarasiFilters.map((filter, index) => ({
@@ -254,56 +270,69 @@ function App() {
   
     function handleSearch() {
       const queryParams = new URLSearchParams();
-  
+    
       filters.forEach((section) => {
-          if (section.toggleEnabled) {
-              section.filters.forEach((filter, index) => {
-                  if (filter.enabled && filter.value) {
-                      queryParams.append(`${section.title.replace(/ /g, '_').toLowerCase()}_${index}`, filter.value);
-                  }
-              });
-  
-              queryParams.append(`${section.title.replace(/ /g, '_').toLowerCase()}_enabled`, 'true');
-          }
-      });
-  
-      fetch(`http://127.0.0.1:5000/search?${queryParams.toString()}`)
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
+        if (section.toggleEnabled) {
+          const sectionKey = section.param;
+          section.filters.forEach((filter, index) => {
+            if (filter.enabled) {
+              const filterKey = filterMap[sectionKey] ? filterMap[sectionKey][index] : null;
+              if (filterKey) {
+                const queryParamKey = `${sectionKey}_${filterKey}`;
+                if (filter.value) {
+                  queryParams.append(queryParamKey, filter.value.toUpperCase());
+                } else if (sectionKey === "sirket_turu") {
+                  queryParams.append(queryParamKey, "true");
+                }
               }
-              return response.json(); // Parse JSON response
-          })
-          .then(data => {
-              console.log("Search results:", data);
-          })
-          .catch(error => {
-              console.error("Error during search:", error);
+            }
           });
-  }
+        
+          queryParams.append(`${sectionKey}_enabled`, 'true');
+        }        
+      });
+      console.log(`http://127.0.0.1:5000/search?${queryParams.toString()}`);
+
+      fetch(`http://127.0.0.1:5000/search?${queryParams.toString()}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse JSON response
+        })
+        .then(data => {
+          console.log("Search results:", data);
+        })
+        .catch(error => {
+          console.error("Error during search:", error);
+        });
+    }
+    
     
   
     return (
       <div className="app-container">
-        <h1 className="main-title">Advanced Search Engine for İZTO</h1>
-        <div className="grid-container">
-          {filters.map((section, index) => (
-            <FilterSection
-              key={index}
-              title={section.title}
-              toggleEnabled={section.toggleEnabled}
-              setToggleEnabled={section.setToggleEnabled}
-              filters={section.filters}
-            />
-          ))}
-        </div>
-  
-        <div className="search-button-container">
-          <button onClick={handleSearch}>Search</button>
-        </div>
-  
-        <div className="logo-container">
-          <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
+        <div className="app-main-container">
+          <div className= "header-container">
+            <div className="logo-container">
+              <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
+            </div>
+            <h1 className="main-title">Advanced Search Engine for İZTO</h1>
+            <div className="search-button-container">
+              <button onClick={handleSearch}>Search</button>
+            </div>  
+          </div>
+          <div className="grid-container">
+            {filters.map((section, index) => (
+              <FilterSection
+                key={index}
+                title={section.title}
+                toggleEnabled={section.toggleEnabled}
+                setToggleEnabled={section.setToggleEnabled}
+                filters={section.filters}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );

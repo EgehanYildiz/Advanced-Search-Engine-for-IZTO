@@ -25,13 +25,17 @@ function FilterSection({ title, toggleEnabled, setToggleEnabled, filters }) {
                 checked={filter.enabled}
                 onChange={(e) => filter.setEnabled(e.target.checked)}
               />
-              <input
-                type="text"
-                placeholder={filter.label}
-                value={filter.value || ''}
-                onChange={(e) => filter.onChange(e.target.value)}
-                disabled={!filter.enabled}
-              />
+              {title === "Şirket Türü Koşulları" ? (
+                filter.label // Only show label for Şirket Türü Koşulları
+              ) : (
+                <input
+                  type="text"
+                  placeholder={filter.label}
+                  value={filter.value || ''}
+                  onChange={(e) => filter.onChange(e.target.value)}
+                  disabled={!filter.enabled}
+                />
+              )}
             </label>
           </div>
         ))}
