@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FilterSection from './components/FilterSection';
+import ResultDisplay from './components/ResultDisplay';  // Import ResultDisplay
 import './App.css';
 
 const filterMap = {
@@ -18,72 +19,72 @@ function App() {
   // Define state variables for each filter section
   const [odaSicilEnabled, setOdaSicilEnabled] = useState(false);
   const [odaSicilFilters, setOdaSicilFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [ticariSicilEnabled, setTicariSicilEnabled] = useState(false);
   const [ticariSicilFilters, setTicariSicilFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [meslekGrubuEnabled, setMeslekGrubuEnabled] = useState(false);
   const [meslekGrubuFilters, setMeslekGrubuFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [ilceAdiEnabled, setIlceAdiEnabled] = useState(false);
   const [ilceAdiFilters, setIlceAdiFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [mahalleAdiEnabled, setMahalleAdiEnabled] = useState(false);
   const [mahalleAdiFilters, setMahalleAdiFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [unvaniEnabled, setUnvaniEnabled] = useState(false);
   const [unvaniFilters, setUnvaniFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [tescilliAdresiEnabled, setTescilliAdresiEnabled] = useState(false);
   const [tescilliAdresiFilters, setTescilliAdresiFilters] = useState([
-    { label: "... sekansını içerenler", value: '', enabled: false },
-    { label: "... sekansını içermeyenler", value: '', enabled: false },
+    { label: "... kelime grubunu içerenler", value: '', enabled: false },
+    { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
     { label: "... ile başlayanlar", value: '', enabled: false },
     { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... uzunluğunda olanlar", value: '', enabled: false },
+    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [sirketTuruEnabled, setSirketTuruEnabled] = useState(false);
@@ -95,10 +96,12 @@ function App() {
   const [meslekGrubuNumarasiEnabled, setMeslekGrubuNumarasiEnabled] = useState(false);
   const [meslekGrubuNumarasiFilters, setMeslekGrubuNumarasiFilters] = useState([
     { label: "... numaralı", value: '', enabled: false },
-    { label: "... öncesi", value: '', enabled: false },
-    { label: "... sonrası", value: '', enabled: false },
-    { label: "... aralığındakiler (örn: 30-50)", value: '', enabled: false },
+    { label: "... sayısının öncesi", value: '', enabled: false },
+    { label: "... sayısının sonrası", value: '', enabled: false },
+    { label: "... sayıları aralığındakiler (örn: 30-50)", value: '', enabled: false },
   ]);
+
+  const [results, setResults] = useState([]);
 
   const filters = [
     {
@@ -302,6 +305,7 @@ function App() {
         })
         .then(data => {
           console.log("Search results:", data);
+          setResults(data);  // Set the search results
         })
         .catch(error => {
           console.error("Error during search:", error);
@@ -313,14 +317,14 @@ function App() {
     return (
       <div className="app-container">
         <div className="app-main-container">
-          <div className= "header-container">
+          <div className="header-container">
             <div className="logo-container">
               <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
             </div>
             <h1 className="main-title">Advanced Search Engine for İZTO</h1>
             <div className="search-button-container">
               <button onClick={handleSearch}>Search</button>
-            </div>  
+            </div>
           </div>
           <div className="grid-container">
             {filters.map((section, index) => (
@@ -333,6 +337,7 @@ function App() {
               />
             ))}
           </div>
+          <ResultDisplay results={results} />  {/* Add the ResultDisplay here */}
         </div>
       </div>
     );

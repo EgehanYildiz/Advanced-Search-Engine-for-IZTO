@@ -20,6 +20,7 @@ body, html {
 
 .grid-container {
   display: grid;
+  padding-top: 10px;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   width: 100%;
@@ -28,7 +29,7 @@ body, html {
 
 
 .search-button-container button {
-  background-color: #007bff; /* Bootstrap Primary Blue */
+  background-color: #969696;
   color: white;
   border: none;
   border-radius: 5px;
@@ -41,16 +42,16 @@ body, html {
 }
 
 .search-button-container button:hover {
-  background-color: #0056b3; /* Darker Blue on Hover */
+  background-color: #676767;
 }
 
 .search-button-container button:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 5px #676767(0, 123, 255, 0.5);
 }
 
 .search-button-container button:active {
-  background-color: #004085; /* Even Darker Blue on Click */
+  background-color: #676767;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transform: translateY(2px);
 }
@@ -61,7 +62,7 @@ body, html {
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border: 2px solid black;
+  border: 2px solid #969696;
 }
 
 .filter-section-container {
@@ -104,8 +105,32 @@ body, html {
 }
 
 .checkbox-label input[type="checkbox"] {
-  margin-right: 10px;
+  appearance: none; /* Remove default checkbox styling */
+  -webkit-appearance: none; /* Remove default checkbox styling in WebKit browsers */
+  background-color: #ccc; /* Gray background */
+  border: 1px solid #888; /* Slightly darker gray border */
+  width: 18px;
+  height: 18px;
+  border-radius: 3px; /* Optional: Make corners slightly rounded */
+  cursor: pointer;
+  position: relative;
 }
+
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: #888; /* Darker gray when checked */
+  border: 1px solid #666; /* Darker border when checked */
+}
+
+.checkbox-label input[type="checkbox"]:checked::before {
+  content: '\2713'; /* Unicode character for checkmark */
+  color: white; /* White checkmark */
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 
 .checkbox-label input[type="text"] {
   flex-grow: 1; /* Make the input field take up the remaining space */
@@ -138,9 +163,10 @@ body, html {
 
 .main-title {
   text-align: center;
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-weight: bold;
-  margin-bottom: -8px;
+  margin-bottom: -1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .search-button-container {
@@ -154,4 +180,5 @@ body, html {
   border-color: black;
   padding: 80px;
   padding-top: 35px;  
+  padding-bottom: 50px; 
 }
