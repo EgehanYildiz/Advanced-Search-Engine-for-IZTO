@@ -29,9 +29,9 @@ class Companies(db.Model):
                 'ticari_sicil_no': self.ticari_sicil_no,
                 'meslek_grubu_numarasi': self.meslek_grubu_numarasi,
                 'meslek_grubu_adi': self.meslek_grubu_adi,
+                'unvani': self.unvani,
                 'sirket_turu': self.sirket_turu,
                 'mahalle_adi': self.mahalle_adi,
                 'ilce_adi': self.ilce_adi,
-                'unvani': self.unvani,
                 'tescilli_adresi': self.tescilli_adresi,
             }

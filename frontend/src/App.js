@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 import FilterSection from './components/FilterSection';
-import ResultDisplay from './components/ResultDisplay';  // Import ResultDisplay
+import ResultDisplay from './components/ResultDisplay';
 import './App.css';
 
 const filterMap = {
@@ -16,7 +18,6 @@ const filterMap = {
 };
 
 function App() {
-  // Define state variables for each filter section
   const [odaSicilEnabled, setOdaSicilEnabled] = useState(false);
   const [odaSicilFilters, setOdaSicilFilters] = useState([
     { label: "... kelime grubunu içerenler", value: '', enabled: false },
@@ -311,37 +312,89 @@ function App() {
           console.error("Error during search:", error);
         });
     }
+
+    function exportToExcel(results) {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Results');
+
+        // Define the headers and their order
+        const headers = [
+            { header: 'Oda Sicil No', key: 'oda_sicil_no', width: 15 },
+            { header: 'Ticari Sicil No', key: 'ticari_sicil_no', width: 15 },
+            { header: 'Meslek Grubu Numarası', key: 'meslek_grubu_numarasi', width: 15 },
+            { header: 'Meslek Grubu Adı', key: 'meslek_grubu_adi', width: 30 },
+            { header: 'Ünvanı', key: 'unvani', width: 40 },
+            { header: 'Şirket Türü', key: 'sirket_turu', width: 15 },
+            { header: 'İlçe Adı', key: 'ilce_adi', width: 20 },
+            { header: 'Mahalle Adı', key: 'mahalle_adi', width: 25 },
+            { header: 'Tescilli Adresi', key: 'tescilli_adresi', width: 40 }
+        ];
+
+        worksheet.columns = headers;
+
+        // Apply header style
+        worksheet.getRow(1).eachCell(cell => {
+            cell.font = { bold: true, color: { argb: 'FFFFFF' } };
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '969696' }
+            };
+            cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        });
+
+        // Add rows to the worksheet
+        results.forEach(result => {
+            worksheet.addRow(result);
+        });
+
+        // Apply text wrapping and alignment to all cells
+        worksheet.eachRow({ includeEmpty: true }, row => {
+            row.eachCell({ includeEmpty: true }, cell => {
+                cell.alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
+            });
+        });
+
+        // Generate the Excel file and prompt for download
+        workbook.xlsx.writeBuffer().then(buffer => {
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            saveAs(blob, 'search_results.xlsx');
+        });
+    }
     
-    
-  
-    return (
-      <div className="app-container">
-        <div className="app-main-container">
-          <div className="header-container">
-            <div className="logo-container">
-              <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
-            </div>
-            <h1 className="main-title">Advanced Search Engine for İZTO</h1>
-            <div className="search-button-container">
-              <button onClick={handleSearch}>Search</button>
-            </div>
+
+  return (
+    <div className="app-container">
+      <div className="app-main-container">
+        <div className="header-container">
+          <div className="logo-container">
+            <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
           </div>
-          <div className="grid-container">
-            {filters.map((section, index) => (
-              <FilterSection
-                key={index}
-                title={section.title}
-                toggleEnabled={section.toggleEnabled}
-                setToggleEnabled={section.setToggleEnabled}
-                filters={section.filters}
-              />
-            ))}
+          <h1 className="main-title">Advanced Search Engine for İZTO</h1>
+          <div className="search-button-container">
+            <button onClick={handleSearch}>Search</button>
+            {results.length > 0 && (
+              <button onClick={() => exportToExcel(results)} style={{ marginLeft: '10px' }}>
+                Export to Excel
+              </button>
+            )}
           </div>
-          <ResultDisplay results={results} />  {/* Add the ResultDisplay here */}
         </div>
+        <div className="grid-container">
+          {filters.map((section, index) => (
+            <FilterSection
+              key={index}
+              title={section.title}
+              toggleEnabled={section.toggleEnabled}
+              setToggleEnabled={section.setToggleEnabled}
+              filters={section.filters}
+            />
+          ))}
+        </div>
+        <ResultDisplay results={results} />
       </div>
-    );
-  }
-  
-  export default App;
+    </div>
+  );       
+}
+export default App;
   
