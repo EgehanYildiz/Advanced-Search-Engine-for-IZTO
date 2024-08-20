@@ -89,16 +89,14 @@ body, html {
 }
 
 .logo-container {
-  margin-top: 30px;
+  margin-top: 0px;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 .izto-logo {
-  margin-top: -40px;
   max-width: 70%;
-  height: 80%; /* 120% of the container height */
-  object-fit: contain; /* Maintain aspect ratio */
+  height: 80%;
+  object-fit: contain;
 }
-

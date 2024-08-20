@@ -1,6 +1,7 @@
 #__init__.py
 
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from app.config import Config
 
@@ -14,7 +15,8 @@ db = SQLAlchemy() # -> a popular Object-Relational Mapping (ORM) library for Pyt
 # App instance'ını oluşturan create_app içerisinde ise app zaten konfigüre bir şekilde iletilecek run.py'a bu sayede modüler ve yönlendirmeli bir yapı ile uygulama kurulacak.
 
 def create_app():
-    app = Flask(__name__) # -> is used to create an instance of a Flask application
+    app = Flask(__name__)
+    CORS(app)  # This will enable CORS for all routes
     app.config.from_object(Config) # -> imports your configuration settings from a Config class, bu class içerisinde database'e bağlanmak için gereken bilgileri taşıyor.
 
     # Importing the models, SQLAlchemy might not know about your models.

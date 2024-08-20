@@ -21,11 +21,17 @@ function FilterSection({ title, toggleEnabled, setToggleEnabled, filters }) {
           <div className="filter-option" key={index}>
             <label className="checkbox-label">
               <input
-                type={filter.type || "checkbox"}
-                checked={filter.checked}
-                onChange={filter.onChange}
+                type="checkbox"
+                checked={filter.enabled}
+                onChange={(e) => filter.setEnabled(e.target.checked)}
               />
-              {filter.label}
+              <input
+                type="text"
+                placeholder={filter.label}
+                value={filter.value || ''}
+                onChange={(e) => filter.onChange(e.target.value)}
+                disabled={!filter.enabled}
+              />
             </label>
           </div>
         ))}
