@@ -1,4 +1,4 @@
-# Advanced-Search-Engine-for-İZTO
+# Advanced-Search-Engine-for-İZTO (Web App for PCs)
 
 ## Izmir Chamber of Commerce (İZTO): 
 
@@ -44,14 +44,20 @@ These selected conditions and subconditions will be converted into a request on 
 
 - **AJAX**: AJAX (Asynchronous JavaScript and XML) is used to handle asynchronous data exchanges between the frontend and backend without needing to refresh the page. This technology is critical for maintaining a responsive user interface, especially when executing and retrieving results from complex database queries.
 
+- **REACT**: React is a powerful JavaScript library utilized to build the frontend of the web application. It allows for efficient and flexible development by enabling the creation of reusable UI components. React’s component-based architecture simplifies the process of managing complex user interfaces and ensures a seamless, dynamic user experience.
+  
 ### Testing:
 - **POSTMAN**: The backend part is tested with POSTMAN when frontend was missing. POSTMAN is a popular API testing tool used by developers to send requests to the backend server and receive responses, enabling them to test the functionality of APIs.
 
 ### Deployment:
 - **Vercel**: Vercel is the chosen platform for deploying the frontend of the application. Vercel is well-suited for modern web applications, offering seamless integration with frontend frameworks and providing a streamlined deployment process. The Flask backend will be connected through API routes hosted either on Vercel or a suitable backend hosting service.
 
-- **Docker (Planned)**: In future iterations, Docker will be incorporated to containerize the application. Docker will ensure that the application runs consistently across different environments—be it development, testing, or production. This approach will facilitate easier deployment and scaling.
+- **Render**: Render is considered for deploying the Flask backend. It offers easy deployment options for web services and APIs, providing automatic SSL, custom domains, and a straightforward CI/CD pipeline. Render’s flexibility allows for seamless integration with Vercel, ensuring that both the frontend and backend work together cohesively.
+  
+- **AWS RDS (Amazon Relational Database Service)**: AWS RDS is utilized for managing the application’s relational database. It offers scalable, secure, and high-performance database solutions, ensuring that the data is reliably stored and easily accessible. AWS RDS supports MySQL, which is used to manage the application's data, and offers automated backups, software patching, and monitoring to maintain the database's health and security.
 
+**Note:** All deployment services have been carefully selected to ensure that the application is fully built and deployed at no cost.
+  
 ### Workflow:
 1. **User Interaction**: Users interact with a carefully designed UI consisting of nine main condition areas, each corresponding to a specific database column. Each area can be toggled on or off, and users can select from various subconditions to apply specific filters.
    
@@ -59,7 +65,9 @@ These selected conditions and subconditions will be converted into a request on 
 
 3. **Database Query**: The dynamically constructed query is executed against the MySQL database. SQLAlchemy’s ORM capabilities ensure that the data retrieved is fully aligned with the filters applied by the user.
 
-4. **Results Display**: The filtered results are returned to the frontend, where they are displayed in a scrollable interface. Users can easily browse through the companies that match their search criteria.
+4. **Results Display**: The filtered results are returned to the frontend, where they are displayed in a scrollable interface. Users can easily browse through the companies that match their search criteria. Users can also export filtered results to Excel, further enhancing data accessibility.
 
-5. **Future Enhancements**: Upcoming features include the ability to export filtered results to Excel, further enhancing data accessibility. Additionally, more complex filtering capabilities and performance optimizations are planned to ensure scalability as the dataset grows.
+### Downsides of the Project:
+- **Non-automated Database / No pipeline**: The system currently lacks an automated build pipeline that continuously monitors and updates the database with new company entries. As an intern without access to IZTO’s internal company entry systems, I am unable to implement a real-time update mechanism. Consequently, the database is static and reflects all publicly available data as of August 22, 2024. However, I have developed the necessary scripts that, if provided with a trigger, would enable the creation of such a pipeline.
 
+- **Mobile Responsiveness**: While the application could be made mobile-responsive, this feature was not prioritized due to the limited timeframe of the project (completed within 8 days). After discussing with my supervisor, we agreed to focus on other core aspects of the internship. Mobile responsiveness could be implemented with further adjustments to the CSS, leveraging media queries, percentage-based layouts, viewport height (vh), and modern layout techniques such as flexbox and grid.
