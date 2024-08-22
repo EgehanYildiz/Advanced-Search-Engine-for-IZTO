@@ -1,7 +1,7 @@
 #filters.py
 
 from app.models import Companies
-from sqlalchemy import func
+from sqlalchemy import func, text
 
 def apply_oda_sicil_no_filters(query, filters):
     if filters.get('oda_sicil_no_contains'):
@@ -15,7 +15,7 @@ def apply_oda_sicil_no_filters(query, filters):
     if filters.get('oda_sicil_no_exact'):
         query = query.filter(Companies.oda_sicil_no == filters['oda_sicil_no_exact'])
     if filters.get('oda_sicil_no_length'):
-        query = query.filter(func.length(Companies.oda_sicil_no) == filters['oda_sicil_no_length'])
+        query = query.filter(func.char_length(Companies.oda_sicil_no) == filters['oda_sicil_no_length'])
     return query
 
 def apply_ticari_sicil_no_filters(query, filters):
@@ -30,7 +30,7 @@ def apply_ticari_sicil_no_filters(query, filters):
     if filters.get('ticari_sicil_no_exact'):
         query = query.filter(Companies.ticari_sicil_no == filters['ticari_sicil_no_exact'])
     if filters.get('ticari_sicil_no_length'):
-        query = query.filter(func.length(Companies.ticari_sicil_no) == filters['ticari_sicil_no_length'])
+        query = query.filter(func.char_length(Companies.ticari_sicil_no) == filters['ticari_sicil_no_length'])
     return query
 
 def apply_meslek_grubu_adi_filters(query, filters):
@@ -45,7 +45,7 @@ def apply_meslek_grubu_adi_filters(query, filters):
     if filters.get('meslek_grubu_adi_exact'):
         query = query.filter(Companies.meslek_grubu_adi == filters['meslek_grubu_adi_exact'])
     if filters.get('meslek_grubu_adi_length'):
-        query = query.filter(func.length(Companies.meslek_grubu_adi) == filters['meslek_grubu_adi_length'])
+        query = query.filter(func.char_length(Companies.meslek_grubu_adi) == filters['meslek_grubu_adi_length'])
     return query
 
 def apply_ilce_adi_filters(query, filters):
@@ -60,7 +60,7 @@ def apply_ilce_adi_filters(query, filters):
     if filters.get('ilce_adi_exact'):
         query = query.filter(Companies.ilce_adi == filters['ilce_adi_exact'])
     if filters.get('ilce_adi_length'):
-        query = query.filter(func.length(Companies.ilce_adi) == filters['ilce_adi_length'])
+        query = query.filter(func.char_length(Companies.ilce_adi) == filters['ilce_adi_length'])
     return query
 
 def apply_mahalle_adi_filters(query, filters):
@@ -75,7 +75,7 @@ def apply_mahalle_adi_filters(query, filters):
     if filters.get('mahalle_adi_exact'):
         query = query.filter(Companies.mahalle_adi == filters['mahalle_adi_exact'])
     if filters.get('mahalle_adi_length'):
-        query = query.filter(func.length(Companies.mahalle_adi) == filters['mahalle_adi_length'])
+        query = query.filter(func.char_length(Companies.mahalle_adi) == filters['mahalle_adi_length'])
     return query
 
 def apply_unvani_filters(query, filters):

@@ -72,20 +72,14 @@ function App() {
   const [unvaniFilters, setUnvaniFilters] = useState([
     { label: "... kelime grubunu içerenler", value: '', enabled: false },
     { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
-    { label: "... ile başlayanlar", value: '', enabled: false },
-    { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [tescilliAdresiEnabled, setTescilliAdresiEnabled] = useState(false);
   const [tescilliAdresiFilters, setTescilliAdresiFilters] = useState([
     { label: "... kelime grubunu içerenler", value: '', enabled: false },
     { label: "... kelime grubunu içermeyenler", value: '', enabled: false },
-    { label: "... ile başlayanlar", value: '', enabled: false },
-    { label: "... ile bitenler", value: '', enabled: false },
     { label: "... ile tam eşleşen", value: '', enabled: false },
-    { label: "... harf uzunluğunda olanlar", value: '', enabled: false },
   ]);
 
   const [sirketTuruEnabled, setSirketTuruEnabled] = useState(false);
@@ -358,7 +352,7 @@ function App() {
         // Generate the Excel file and prompt for download
         workbook.xlsx.writeBuffer().then(buffer => {
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            saveAs(blob, 'search_results.xlsx');
+            saveAs(blob, 'Üye Bilgi Liste.xlsx');
         });
     }
     
