@@ -289,9 +289,8 @@ function App() {
           queryParams.append(`${sectionKey}_enabled`, 'true');
         }        
       });
-      console.log(`http://127.0.0.1:5000/search?${queryParams.toString()}`);
 
-      fetch(`http://127.0.0.1:5000/search?${queryParams.toString()}`)
+      fetch(`https://advanced-search-engine-for-izto.onrender.com/search?${queryParams.toString()}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
