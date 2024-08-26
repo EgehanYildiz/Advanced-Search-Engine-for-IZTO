@@ -39,6 +39,8 @@ These selected conditions and subconditions will be converted into a request on 
 
 - **MySQL**: The relational database management system used in this application is MySQL. MySQL is renowned for its reliability, performance, and ease of use. The database schema is designed to efficiently store and query structured data, particularly the company records being managed. During development, MySQL Workbench is employed for local database management, while the production environment will utilize a remote MySQL database, ensuring data availability and security.
 
+- **Pandas**: Pandas, a powerful data manipulation library in Python, plays a crucial role in the ETL (Extract, Transform, Load) processes of this project. It is utilized in scripts that handle data cleaning, transformation, and preparation before importing it into the database. Pandas excels in processing and converting Excel and CSV files, enabling the creation of structured datasets from raw inputs. These datasets are then imported into the MySQL database, ensuring that the data is accurate and well-organized for subsequent querying and analysis. The trio of scripts leveraging Pandas streamlines the entire ETL workflow, making the data ingestion process both efficient and scalable.
+
 ### Frontend:
 - **HTML/CSS/JavaScript**: The frontend is constructed using standard web technologies. HTML provides the structure of the web pages, CSS enhances the visual styling, and JavaScript adds dynamic interactivity. The UI is designed with a focus on user experience, enabling users to apply complex filters easily and view results in real-time.
 
