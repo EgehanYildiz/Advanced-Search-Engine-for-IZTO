@@ -352,19 +352,29 @@ function App() {
       worksheet.mergeCells(`A${countRow.number}:I${countRow.number}`);
       countRow.height = 25;
   
-      const filterDetails = filters.flatMap(section => {
-          return section.filters.filter(filter => filter.enabled).map(filter => {
-              const valueText = filter.value ? `: ${filter.value}` : '';
-              return `${section.param}_${filter.label.replace(/ /g, '_').toLowerCase()}${valueText}`;
+      const filterDetails = filters
+      .flatMap(section => {
+        return section.filters
+          .filter(filter => filter.enabled)
+          .map(filter => {
+            const valueText = filter.value ? `: ${filter.value}` : '';
+            // Format correctly with underscores for each space, but preserve logical formatting
+            const formattedLabel = filter.label
+              .replace(/[^a-zA-Z0-9ğüşöçİĞÜŞÖÇ]/g, '_') // Remove special characters and replace with underscore
+              .replace(/_+/g, '_') // Replace multiple underscores with a single one
+              .toLowerCase();
+    
+            return `${section.param}_${formattedLabel}${valueText}`;
           });
-      }).join(', ');
-  
+      })
+      .join(', ');
+
       const filterRow = worksheet.addRow([`Filters Applied: ${filterDetails || 'None'}`]);
       filterRow.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
       filterRow.getCell(1).fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFd9d9d9' }
+          fgColor: { argb: 'FF7fb8b2' }
       };
       filterRow.alignment = { vertical: 'middle', horizontal: 'center' };
       worksheet.mergeCells(`A${filterRow.number}:I${filterRow.number}`);
