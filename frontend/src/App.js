@@ -97,6 +97,7 @@ function App() {
   ]);
 
   const [results, setResults] = useState([]);
+  const [count, setCount] = useState(0);
 
   const filters = [
     {
@@ -285,109 +286,148 @@ function App() {
               }
             }
           });
-        
+    
           queryParams.append(`${sectionKey}_enabled`, 'true');
-        }        
+        }
       });
-
-      fetch(`https://advanced-search-engine-for-izto.onrender.com/search?${queryParams.toString()}`)
+    
+      fetch(`http://127.0.0.1:5000/search?${queryParams.toString()}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          return response.json(); // Parse JSON response
+          return response.json(); 
         })
         .then(data => {
           console.log("Search results:", data);
-          setResults(data);  // Set the search results
+          setResults(data.results);   
+          setCount(data.count);  
         })
         .catch(error => {
           console.error("Error during search:", error);
         });
     }
+       
 
-    function exportToExcel(results) {
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Results');
-
-        // Define the headers and their order
-        const headers = [
-            { header: 'Oda Sicil No', key: 'oda_sicil_no', width: 15 },
-            { header: 'Ticari Sicil No', key: 'ticari_sicil_no', width: 15 },
-            { header: 'Meslek Grubu Numarası', key: 'meslek_grubu_numarasi', width: 15 },
-            { header: 'Meslek Grubu Adı', key: 'meslek_grubu_adi', width: 30 },
-            { header: 'Ünvanı', key: 'unvani', width: 40 },
-            { header: 'Şirket Türü', key: 'sirket_turu', width: 15 },
-            { header: 'İlçe Adı', key: 'ilce_adi', width: 20 },
-            { header: 'Mahalle Adı', key: 'mahalle_adi', width: 25 },
-            { header: 'Tescilli Adresi', key: 'tescilli_adresi', width: 40 }
-        ];
-
-        worksheet.columns = headers;
-
-        // Apply header style
-        worksheet.getRow(1).eachCell(cell => {
-            cell.font = { bold: true, color: { argb: 'FFFFFF' } };
-            cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: '969696' }
-            };
-            cell.alignment = { vertical: 'middle', horizontal: 'center' };
-        });
-
-        // Add rows to the worksheet
-        results.forEach(result => {
-            worksheet.addRow(result);
-        });
-
-        // Apply text wrapping and alignment to all cells
-        worksheet.eachRow({ includeEmpty: true }, row => {
-            row.eachCell({ includeEmpty: true }, cell => {
-                cell.alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
-            });
-        });
-
-        // Generate the Excel file and prompt for download
-        workbook.xlsx.writeBuffer().then(buffer => {
-            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            saveAs(blob, 'Üye Bilgi Liste.xlsx');
-        });
-    }
+    function exportToExcel(results = [], count = 0, filters = []) {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Results');
+  
+      const headers = [
+          { header: 'Oda Sicil No', key: 'oda_sicil_no', width: 15 },
+          { header: 'Ticari Sicil No', key: 'ticari_sicil_no', width: 15 },
+          { header: 'Meslek Grubu Numarası', key: 'meslek_grubu_numarasi', width: 15 },
+          { header: 'Meslek Grubu Adı', key: 'meslek_grubu_adi', width: 30 },
+          { header: 'Ünvanı', key: 'unvani', width: 40 },
+          { header: 'Şirket Türü', key: 'sirket_turu', width: 15 },
+          { header: 'İlçe Adı', key: 'ilce_adi', width: 20 },
+          { header: 'Mahalle Adı', key: 'mahalle_adi', width: 25 },
+          { header: 'Tescilli Adresi', key: 'tescilli_adresi', width: 40 }
+      ];
+  
+      worksheet.columns = headers;
+  
+      worksheet.getRow(1).eachCell(cell => {
+          cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FF969696' }
+          };
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      });
+  
+      results.forEach(result => {
+          worksheet.addRow(result);
+      });
+  
+      const countRow = worksheet.addRow([`Number of Firms Found: ${count}`]);
+      countRow.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      countRow.getCell(1).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FF969696' }
+      };
+      countRow.alignment = { vertical: 'middle', horizontal: 'center' };
+      worksheet.mergeCells(`A${countRow.number}:I${countRow.number}`);
+      countRow.height = 25;
+  
+      const filterDetails = filters.flatMap(section => {
+          return section.filters.filter(filter => filter.enabled).map(filter => {
+              const valueText = filter.value ? `: ${filter.value}` : '';
+              return `${section.param}_${filter.label.replace(/ /g, '_').toLowerCase()}${valueText}`;
+          });
+      }).join(', ');
+  
+      const filterRow = worksheet.addRow([`Filters Applied: ${filterDetails || 'None'}`]);
+      filterRow.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      filterRow.getCell(1).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFd9d9d9' }
+      };
+      filterRow.alignment = { vertical: 'middle', horizontal: 'center' };
+      worksheet.mergeCells(`A${filterRow.number}:I${filterRow.number}`);
+      filterRow.height = 25;
+  
+      worksheet.eachRow({ includeEmpty: true }, row => {
+          row.eachCell({ includeEmpty: true }, cell => {
+              cell.alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
+          });
+      });
+  
+      workbook.xlsx.writeBuffer().then(buffer => {
+          const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const filename = `Üye Bilgi Liste.xlsx`; 
+          saveAs(blob, filename);
+      });
+  }
+  
+    
+  
+  
+  
     
 
-  return (
-    <div className="app-container">
-      <div className="app-main-container">
-        <div className="header-container">
-          <div className="logo-container">
-            <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
+    return (
+      <div className="app-container">
+        <div className="app-main-container">
+          <div className="header-container">
+            <div className="logo-container">
+              <img src={`${process.env.PUBLIC_URL}/logo500.png`} alt="İZTO Logo" className="izto-logo" />
+            </div>
+            <h1 className="main-title">Advanced Search Engine for İZTO</h1>
+            <div className="search-button-container">
+              <button onClick={handleSearch}>Search</button>
+              {results.length > 0 && (
+                <button onClick={() => exportToExcel(results, count, filters)} style={{ marginLeft: '10px' }}>
+                  Export to Excel
+                </button>
+              )}
+            </div>
           </div>
-          <h1 className="main-title">Advanced Search Engine for İZTO</h1>
-          <div className="search-button-container">
-            <button onClick={handleSearch}>Search</button>
-            {results.length > 0 && (
-              <button onClick={() => exportToExcel(results)} style={{ marginLeft: '10px' }}>
-                Export to Excel
-              </button>
+          <div className="grid-container">
+            {filters.map((section, index) => (
+              <FilterSection
+                key={index}
+                title={section.title}
+                toggleEnabled={section.toggleEnabled}
+                setToggleEnabled={section.setToggleEnabled}
+                filters={section.filters}
+              />
+            ))}
+          </div>
+          <ResultDisplay results={results} />
+          {count > 0 && (
+              <div className="firm-count">
+                <p>{`Number of Firms Found: ${count}`}</p>
+              </div>
             )}
-          </div>
         </div>
-        <div className="grid-container">
-          {filters.map((section, index) => (
-            <FilterSection
-              key={index}
-              title={section.title}
-              toggleEnabled={section.toggleEnabled}
-              setToggleEnabled={section.setToggleEnabled}
-              filters={section.filters}
-            />
-          ))}
-        </div>
-        <ResultDisplay results={results} />
       </div>
-    </div>
-  );       
+    );
+    
+       
 }
 export default App;
   

@@ -38,6 +38,7 @@ function ResultDisplay({ results }) {
           ))}
         </tbody>
       </table>
+      <div className="result-count">Number of results: {results.length}</div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import './FilterSection.css';
 
 function FilterSection({ title, toggleEnabled, setToggleEnabled, filters }) {
   return (
@@ -26,7 +27,7 @@ function FilterSection({ title, toggleEnabled, setToggleEnabled, filters }) {
                 onChange={(e) => filter.setEnabled(e.target.checked)}
               />
               {title === "Şirket Türü Koşulları" ? (
-                filter.label // Only show label for Şirket Türü Koşulları
+                filter.label 
               ) : (
                 <input
                   type="text"

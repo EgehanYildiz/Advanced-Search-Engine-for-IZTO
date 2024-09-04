@@ -56,48 +56,6 @@ body, html {
   transform: translateY(2px);
 }
 
-
-.filter-section {
-  background-color: #f7f7f7;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border: 2px solid #969696;
-}
-
-.filter-section-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-}
-
-.filter-section-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.filter-section-toggle {
-  display: flex;
-  align-items: center;
-}
-
-.filter-section-toggle input {
-  margin-right: 5px;
-}
-
-.filter-section-content {
-  margin-top: 10px;
-}
-
-.filter-option {
-  margin-bottom: 10px;
-}
-
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -183,3 +141,22 @@ body, html {
   padding-bottom: 50px; 
 }
 
+.firm-count {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #abb6be96;  
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; 
+  font-size: 1.2rem;  
+  font-weight: bold;  
+  color: #333; 
+}
+
+.firm-count p {
+  transition: transform 0.2s ease-in-out;
+}
+
+.firm-count p:hover {
+  transform: scale(1.03);
+}

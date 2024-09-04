@@ -23,7 +23,16 @@ main = Blueprint('main', __name__)
 def search():
     filters = request.args.to_dict()
     results = search_companies(**filters)
-    return jsonify([result.as_dict() for result in results])
+    
+    # Calculate the number of firms found
+    firms_count = len(results)
+    
+    # Return both the count and the results
+    return jsonify({
+        'count': firms_count,
+        'results': [result.as_dict() for result in results]
+    })
+
 
 def search_companies(**filters):
     query = Companies.query
