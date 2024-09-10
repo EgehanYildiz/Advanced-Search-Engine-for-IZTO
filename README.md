@@ -1,6 +1,6 @@
 # Advanced-Search-Engine-for-İZTO (Web App for PCs)
 
-#### To access the project, click here: https://advanced-search-engine-for-izto.vercel.app/ 
+#### To access the project, click here: https://advanced-search-engine-for-izto.vercel.app/ -> Please note that there may be a delay of approximately 50 seconds due to the deployment platforms used.
 #### Only for PCs!
 
 ## Izmir Chamber of Commerce (İZTO): 
